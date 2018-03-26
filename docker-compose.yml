@@ -1,0 +1,28 @@
+app:
+  build: .
+  command: python manage.py runserver 0.0.0.0:8000
+  environment:
+    DATABASE_URL: postgres://postgres@postgres/app
+    DEBUG: 1
+    ELASTICSEARCH_HOST: elasticsearch
+    SECRET_KEY: xxxxxx
+  links:
+    - elasticsearch
+    - postgres
+  ports:
+    - 8000:8000
+  volumes:
+    - ./:/app
+
+elasticsearch:
+  image: elasticsearch:5
+  expose:
+    - 9200
+    - 9300
+
+postgres:
+  image: postgres:9.6
+  environment:
+    - POSTGRES_DB=app
+  expose:
+    - 5432
